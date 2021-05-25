@@ -22,7 +22,8 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('cctv/', include('cctv.urls')),
+    path('cctv', include('cctv.urls')),
+    path('cctv/cam', include('cctv.urls')),
     path('', RedirectView.as_view(url='cctv/', permanent=True))
 ]
 
