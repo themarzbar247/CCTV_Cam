@@ -18,8 +18,8 @@ from threading  import Thread
 
 
 def main(camra_path_url, camera_name, streaming_dir="./cctvCamera/cctv/static"):
-    camera_feed = camera(streaming_dir, camera_name, camra_path_url)
-    with camera_feed:
+    
+    with camera(streaming_dir, camera_name, camra_path_url) as camera_feed:
         while camera_feed.is_open():
             rect, frame = camera_feed.get_frame()
             # process
