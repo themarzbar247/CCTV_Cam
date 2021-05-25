@@ -22,7 +22,7 @@ def filename_collision_resolve(img_path):
 
 def main(new_find_dir, data_set_dir, rebuild_threshold=10):
     print(new_find_dir)
-    r = Recogniser(new_find_dir, data_set_dir)
+    r = Recogniser(new_find_dir, data_set_dir, rebuild_threshold)
     from time import sleep
     while True:
         print("checking")
@@ -69,16 +69,16 @@ class Recogniser:
         imagePaths = self._get_dataset_img_paths()     
         faceSamples=[]
         ids = []
-        names = {}
+        name_to_id = {}
         for imagePath in imagePaths:
             PIL_img = Image.open(imagePath).convert('L') # grayscale
             img_numpy = np.array(PIL_img,'uint8')
             name = os.path.basename(os.path.dirname(imagePath))
-            face_id = len(ids)
-            names[face_id]=name
+            face_id = len(name_to_id) if name in name_to_id.keys() else name_to_id[name]
+            name_to_id[name]=face_id
             faceSamples.append(img_numpy)
             ids.append(face_id)
-        return faceSamples,ids,names
+        return faceSamples,ids,{v:k for k,v in name_to_id.items()}
 
             
     def build_yml(self):
