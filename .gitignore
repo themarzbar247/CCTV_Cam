@@ -17,6 +17,9 @@ media
 *.ts
 *.m3u8
 
+# Training Files #
+trainer.yml
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
