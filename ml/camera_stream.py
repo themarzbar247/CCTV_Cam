@@ -4,8 +4,11 @@ import randomcolor
 from collections import defaultdict
 from camera_handler import camera
 from commands import Recognise
-
-def main(streaming_dir, camera_name, camra_path_url):
+import sys
+import numpy as np
+from pprint import pformat
+def main(streaming_dir, camera_name, camra_path_url, cascadeClassifierPath):
+    faceCascade = cv2.CascadeClassifier(cascadeClassifierPath)
     rand_color = randomcolor.RandomColor()
     next_color = lambda: [int(x) for x in rand_color.generate(luminosity='bright', format_='rgb')[0][4:-1].split(',')] 
     colors = defaultdict(next_color)
@@ -14,16 +17,19 @@ def main(streaming_dir, camera_name, camra_path_url):
             rect, frame = camera_feed.get_frame()
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            faces = [list(face)+[i] for i,faces in enumerate(faceCascade) for face in faces.detectMultiScale(
+            faces = [list(face)+[i] for i,face in enumerate(faceCascade.detectMultiScale(
                 gray,
                 scaleFactor=1.1,
                 minNeighbors=5,
                 minSize=(30, 30),
                 flags=cv2.CASCADE_SCALE_IMAGE
-            )]
+            ))]
             
             for (x, y, w, h, i) in faces:
-                send(Recognise(frame, x, y, w, h, camera_name, gray[y:y+h,x:x+w]))
+                r = Recognise(frame, x, y, w, h, camera_name, gray[y:y+h,x:x+w])
+                with open("t.txt", "a+") as f:
+                    f.write(pformat(r))
+                send(r)
   
             # Draw a rectangle around the faces
             for (x, y, w, h, i) in faces:

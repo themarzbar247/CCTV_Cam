@@ -2,20 +2,21 @@ from pprint import pformat
 
 class Command:
     def  __repr__(self):
-        return f"{self.__name__}: {pformat(self.__dict__)}"
+        return f"command - {pformat(self.__dict__)}"
 
 class Retrain(Command):
-    def __init__(self,retrain_yml_path):
+    def __init__(self,retrain_yml_path, wait=False):
         super().__init__()
         self.trainer_path=retrain_yml_path
+        self.wait=wait
         
 class Recognise(Command):
-    def __init__(self, frame, x,y,w,h, camera, face):
+    def __init__(self, frame, x,y,w,h, camera_name, face):
         super().__init__()
         self.frame=frame
         self.face_rect = ((x, y), (w, h))
         self.camera = camera_name
-        self.face=face
+        self.face = face
         
 class Quit(Command):
     def __init__(self, data):

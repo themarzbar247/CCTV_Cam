@@ -1,6 +1,7 @@
 {
     "new_find_dir": "C:\\Users\\myles\\Documents\\project\\CCTV_Cam\\tmp_new_add",
     "data_set_dir": "C:\\Users\\myles\\Documents\\project\\CCTV_Cam\\tmp_dataset",
+    "cascadeClassifierPath":"D:\\Python\\Lib\\site-packages\\cv2\\data\\haarcascade_frontalface_alt.xml",
     "unknown_threshold": 10,
     "known_threshold": 90
 }

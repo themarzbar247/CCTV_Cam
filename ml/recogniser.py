@@ -17,6 +17,8 @@ def main():
             command = Decide.create_from_get_frame(command, face_id, confidence)
         elif isinstance(command,Retrain):
             retrainer.run(command.trainer_path)
+            while command.wait and retrainer.recognizer is None:
+                pass
         send(command)
 
 class Retrainer:
@@ -30,7 +32,7 @@ class Retrainer:
 
     def retrain(self):
         recognizer = cv2.face.LBPHFaceRecognizer_create()
-        self.recognizer = recognizer.read(self.train_yml_path)
+        self.recognizer = recognizer.read(self.trainer_path)
 
 if __name__ == "__main__":
     main(*sys.argv[1:])

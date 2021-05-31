@@ -11,6 +11,7 @@ from PIL import Image
 import numpy as np
 from subprocess_wrapper import send
 from commands import Retrain
+import sys
 
 CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
 
@@ -24,6 +25,10 @@ def filename_collision_resolve(img_path):
 
 def main(new_find_dir, data_set_dir, rebuild_threshold=10):
     r = RecogniserTrainer(new_find_dir, data_set_dir, rebuild_threshold)
+    #if we dont want to rebuild we need to tell others about the current file
+    if r.should_rebuild():
+        s = r.build_yml()
+    send(Retrain(r.trainer_file,True))
     from time import sleep
     while True:
         if r.should_rebuild():
@@ -61,21 +66,23 @@ class RecogniserTrainer:
             os.remove(img_path)
     
     def should_rebuild(self):
-        return len(self._get_new_img_paths())>=self.rebuild_threshold
+        return len(self._get_new_img_paths())>=self.rebuild_threshold or not os.path.exists(self.trainer_file)
 
 
     def _getImagesAndLabels(self):
         imagePaths = self._get_dataset_img_paths()     
         faceSamples=[]
         name_to_id = {}
+        ids= []
         for imagePath in imagePaths:
             PIL_img = Image.open(imagePath).convert('L') # grayscale
             img_numpy = np.array(PIL_img,'uint8')
             name = os.path.basename(os.path.dirname(imagePath))
-            face_id = int.from_bytes(name.encode("utf-8"),"big")
+            face_id = int(int.from_bytes(name.encode("utf-8"),"little") % 256)
             name_to_id[name]=face_id
-            faceSamples.append(img_numpy)
-        return faceSamples,name_to_id.values(),{v:k for k,v in name_to_id.items()}
+            ids.append(face_id)
+            faceSamples.append(img_numpy[:,:])
+        return faceSamples,ids,{v:k for k,v in name_to_id.items()}
 
             
     def build_yml(self):

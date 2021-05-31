@@ -6,8 +6,8 @@ import json
 from commands import Recognise, Decide,Retrain
 import sys
 
-def make_camera(streaming_dir, camera_name, camra_path_url):
-    return SubprocessWrapper(camera_stream_file).start(streaming_dir, camera_name, camra_path_url)
+def make_camera(streaming_dir, camera_name, camra_path_url, cascadeClassifierPath):
+    return SubprocessWrapper(camera_stream_file).start(streaming_dir, camera_name, camra_path_url,cascadeClassifierPath)
     
 
 
@@ -20,13 +20,17 @@ def main(manager_config_file,camera_config_file):
     
 
 
-def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold,camera_config):
+def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold, cascadeClassifierPath, camera_config):
     cameras = []
     for camera in camera_config:
-            cameras.append(make_camera(**camera))
+            cameras.append(make_camera(cascadeClassifierPath=cascadeClassifierPath, **camera))
     recogniser = SubprocessWrapper(recogniser_file).start()
-    recognizer_training_manager = SubprocessWrapper(recognizer_training_manager_file).start(new_find_dir, data_set_dir).start()
+    recognizer_training_manager = SubprocessWrapper(recognizer_training_manager_file).start(new_find_dir, data_set_dir)
+    
     while True:
+        training_command = recognizer_training_manager.read()
+        if isinstance(training_command, Retrain):
+            recogniser.send(training_command)
         for cam in cameras:
             face_command = cam.read() 
             if isinstance(face_command, Recognise):
@@ -37,9 +41,6 @@ def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold
                 pass
             elif recogniser_command.confidence >= known_threshold:
                 pass
-        training_command = recognizer_training_manager.read()
-        if isinstance(training_command, Retrain):
-            recogniser.send(training_command)
 
             
 

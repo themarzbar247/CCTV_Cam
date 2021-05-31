@@ -41,16 +41,17 @@ class camera:
         self.in_url = in_url
         self.cap=None
 
+    def get_camera_output_dir(self):
+        return os.path.join(self.streaming_dir,self.out_dir_name)
+
     def is_open(self): return self.cap.isOpened() if self.cap is not None else False
 
     def start_ffmpeg_output_stream(self):
-
         args = (
             ffmpeg
             .input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(self.width, self.height))
             .output(
-                os.path.join(self.streaming_dir,
-                             self.out_dir_name, "stream.m3u8"),
+                os.path.join(self.get_camera_output_dir(), "stream.m3u8"),
                 hls_flags="delete_segments",
                 segment_list_flags="+live",
                 pix_fmt='yuv420p')
@@ -74,8 +75,8 @@ class camera:
             raise Exception("Error: input not open")
         t = time.time()
         r,f = self.cap.read()
-        while r is None and time.time()-t < timeout:
-            self.cap.read()
+        while not r and time.time()-t < timeout:
+            r,f = self.cap.read()
         return r,f
 
     def start_camera(self):
@@ -83,9 +84,11 @@ class camera:
         self.fps = int(cap.get(cv2.CAP_PROP_FPS))
         self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        os.makedirs(self.get_camera_output_dir(), exist_ok=True)
         self.out_stream = self.start_ffmpeg_output_stream()
         self.cap = cap
         self.get_frame(timeout=60)
+
 
     def __enter__(self):
         self.start_camera()
