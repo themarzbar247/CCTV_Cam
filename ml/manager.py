@@ -20,7 +20,7 @@ def main(manager_config_file,camera_config_file):
     
 
 
-def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold, manager_config,camera_config):
+def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold,camera_config):
     cameras = []
     for camera in camera_config:
             cameras.append(make_camera(**camera))
