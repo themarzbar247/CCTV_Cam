@@ -10,6 +10,7 @@ import json
 from PIL import Image
 import numpy as np
 from .helper.subprocess_wrapper import send
+from .helper.commands import Retrain
 
 CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
 
@@ -28,7 +29,7 @@ def main(new_find_dir, data_set_dir, rebuild_threshold=10):
         if r.should_rebuild():
             r.copy_dataset_additions()
             s = r.build_yml()
-            send({"comand": "retrain", "data":{"trainer_path":s}})
+            send(Retrain(s))
         sleep(30)
 
 
