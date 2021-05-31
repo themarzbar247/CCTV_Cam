@@ -3,7 +3,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <div class="header">{% block title %}<title>Test Site</title>{% endblock %}</div>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <div class="header">
+    {% block title %}<title>Test Site</title>{% endblock %}
+  </div>
   <div class="hide">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <symbol viewBox="-167.4 267.7 257.7 257.7" id="facebook">
@@ -51,6 +56,9 @@
         <path class="cls-2" d="M41.78 9H30v-.78A8.22 8.22 0 0 0 21.78 0H8.22A8.22 8.22 0 0 0 0 8.22v27.56A8.22 8.22 0 0 0 8.22 44h33.56A8.22 8.22 0 0 0 50 35.78V17.22A8.22 8.22 0 0 0 41.78 9zM45 35.78A3.22 3.22 0 0 1 41.78 39H8.22A3.22 3.22 0 0 1 5 35.78V8.22A3.22 3.22 0 0 1 8.22 5h13.56A3.22 3.22 0 0 1 25 8.22V9h-8.5a2.5 2.5 0 0 0 0 5h25.28A3.22 3.22 0 0 1 45 17.22z"/>
         <rect class="cls-1" x="14" y="19" width="26" height="5" rx="2.5" ry="2.5"/>
       </symbol>
+      <symbol viewBox="0 0 24 24" id="house">
+        <path d="M20 7.093v-5.093h-3v2.093l3 3zm4 5.907l-12-12-12 12h3v10h7v-5h4v5h7v-10h3zm-5 8h-3v-5h-8v5h-3v-10.26l7-6.912 7 6.99v10.182z"/>
+      </symbol>
 <!--
       <symbol viewBox="" id="">
         <path d=""/>
@@ -60,7 +68,8 @@
   </div>
   <!-- Add additional CSS in static file -->
   {% load static %}
-  <link rel="stylesheet" href="{% static 'css/styles.scss' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.scss' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
   <body>
     {% block sidebar %}
@@ -74,19 +83,19 @@
                       </svg><span>Home</span></a>
                   </li>
                   <li>
-                    <a href="cam">
+                    <a href="/cam">
                       <svg class="cam">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cam"></use>
                       </svg><span>CCTV Viewer</span></a>
                   </li>
                   <li>
-                    <a href="/">
+                    <a href="/alerts">
                       <svg class="bell">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#bell"></use>
                       </svg><span>Alerts</span></a>
                   </li>
                   <li>
-                    <a href="/cctv">
+                    <a href="/recordings">
                       <svg class="file">
                         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#file"></use>
                       </svg><span>Recordings</span></a>
@@ -97,6 +106,7 @@
     {% endblock %}
     <div class="wrap-all-the-things">
       <div class="col-sm-10 ">
+      <>
               {% block content %}
               {% endblock %}
       </div>

@@ -16,6 +16,17 @@ body {
 .span2:focus ~ .alert {
     display: block;
 }
+video {
+    width: 50%;
+    float: left;
+}
+.my-card
+{
+    position:absolute;
+    left:40%;
+    top:-20px;
+    border-radius:50%;
+}
 
 .hide {
     display: none;
@@ -157,7 +168,7 @@ body {
   height: 100%;
   padding-left: 140px;
   margin-top: 0;
-  background-color: gray;
+  background-color: #fefefe;
   background-size: cover;
   background-position: center center;
   transition: transform 400ms, opacity 400ms;

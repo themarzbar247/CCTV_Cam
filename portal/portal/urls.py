@@ -22,13 +22,9 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    path('cctv', include('cctv.urls')),
-    path('cctv/cam', include('cctv.urls')),
-    path('', RedirectView.as_view(url='cctv/', permanent=True))
+    path('', include('cctv.urls')),
+    path('cam', include('cctv.urls')),
+    path('alerts', include('cctv.urls')),
+    path('recordings', include('cctv.urls')),
+    path('', RedirectView.as_view(url='home')),
 ]
-
-
-from django.conf import settings
-from django.conf.urls.static import static
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

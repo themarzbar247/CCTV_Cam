@@ -1,0 +1,22 @@
+{% extends "snippets/base_gen.html" %}
+
+<head>
+    {% block title %}<title>Test Camera</title>{% endblock %}
+</head>
+{% block content %}
+    <!-- CSS  -->
+    <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+    <!-- HTML -->
+    
+    <div class="video-grid">
+        {% for dir in stream_dir %}
+            <div class="video-item">
+            <div class="video-wrap">
+                <iframe src="static/{{dir}}/stream.m3u8" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+            </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- JS code -->
+<script src="https://vjs.zencdn.net/7.11.4/video.min.js"></script>
+{% endblock %}
