@@ -1,0 +1,43 @@
+{% extends "snippets/base_gen.html" %}
+
+<head>
+    {% block title %}<title>Live View</title>{% endblock %}
+</head>
+{% block content %}
+<br>
+<h1>Live View</h1>
+    <!-- Additional CSS  -->
+    <link href="https://vjs.zencdn.net/7.2.3/video-js.css" rel="stylesheet">
+<div class="jumbotron">
+    <div class="row w-100">
+            <!-- Video Grid -->
+                {% for dir in stream_dir %}
+                <div class="col-md-10">
+                <button onclick="myFunction_{{dir|cut:" "}}()">{{dir}}</button>
+                    <div id="{{dir|cut:" "}}">
+                        <div class="video-item">
+                            <div class="video-wrap">
+                                <iframe src="static/{{dir}}/stream.m3u8" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- JS -->
+                    <script>
+                    var x = document.getElementById("{{dir|cut:" "}}");
+                    x.style.display = "none";
+                    function myFunction_{{dir|cut:" "}}() {
+                        var x = document.getElementById("{{dir|cut:" "}}");
+                        if (x.style.display === "none") {
+                            x.style.display = "block";
+                        } else {
+                            x.style.display = "none";
+                        }
+                    }
+                    </script>
+                    <!-- End JS -->
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+            <!-- End of Video Grid-->
+{% endblock %}
