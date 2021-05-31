@@ -1,10 +1,10 @@
-
-from .helper.subprocess_wrapper import SubprocessWrapper
+from subprocess_wrapper import SubprocessWrapper
 from recogniser import __file__ as recogniser_file
 from camera_stream import __file__ as camera_stream_file
 from recognizer_training_manager import __file__ as recognizer_training_manager_file
 import json
-from .helper.commands import Recognise, Decide,Retrain
+from commands import Recognise, Decide,Retrain
+import sys
 
 def make_camera(streaming_dir, camera_name, camra_path_url):
     return SubprocessWrapper(camera_stream_file).start(streaming_dir, camera_name, camra_path_url)
@@ -51,4 +51,4 @@ def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold
 
 
 if __name__ == "__main__":
-    main(*argv[:1])
+    main(*sys.argv[1:])

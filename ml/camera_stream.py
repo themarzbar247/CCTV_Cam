@@ -1,9 +1,9 @@
 import cv2
-from .helper.subprocess_wrapper import send
+from subprocess_wrapper import send
 import randomcolor
 from collections import defaultdict
 from camera_handler import camera
-from .helper.commands import Recognise
+from commands import Recognise
 
 def main(streaming_dir, camera_name, camra_path_url):
     rand_color = randomcolor.RandomColor()

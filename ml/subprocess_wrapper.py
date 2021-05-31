@@ -15,13 +15,13 @@ def send(obj):
 
 class SubprocessWrapper:
     def __init__(self, module_file):
-        self.module_file_name = module_file_name
+        self.module_file_name = module_file
         self.process = None
         self.in_q = Queue()
         self.out_q = Queue()
     
     def start(self, *args):
-        self.process = subprocess.Popen([sys.executable, self.module.__file__, *args],
+        self.process = subprocess.Popen([sys.executable, self.module_file_name, *args],
                             stdin=subprocess.PIPE,
                             stdout=subprocess.PIPE, 
                             close_fds=ON_POSIX)

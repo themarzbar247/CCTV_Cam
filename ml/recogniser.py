@@ -2,8 +2,8 @@ import cv2
 from time import time
 import sys
 import threading
-from .helper.subprocess_wrapper import recieve,send
-from .helper.commands import Recognise, Retrain, Quit, Decide
+from subprocess_wrapper import recieve,send
+from commands import Recognise, Retrain, Quit, Decide
 
 def main():
     retrainer = Retrainer()

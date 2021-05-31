@@ -9,8 +9,8 @@ import cv2
 import json
 from PIL import Image
 import numpy as np
-from .helper.subprocess_wrapper import send
-from .helper.commands import Retrain
+from subprocess_wrapper import send
+from commands import Retrain
 
 CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
 
@@ -67,17 +67,15 @@ class RecogniserTrainer:
     def _getImagesAndLabels(self):
         imagePaths = self._get_dataset_img_paths()     
         faceSamples=[]
-        ids = []
         name_to_id = {}
         for imagePath in imagePaths:
             PIL_img = Image.open(imagePath).convert('L') # grayscale
             img_numpy = np.array(PIL_img,'uint8')
             name = os.path.basename(os.path.dirname(imagePath))
-            face_id = len(name_to_id) if name in name_to_id.keys() else name_to_id[name]
+            face_id = int.from_bytes(name.encode("utf-8"),"big")
             name_to_id[name]=face_id
             faceSamples.append(img_numpy)
-            ids.append(face_id)
-        return faceSamples,ids,{v:k for k,v in name_to_id.items()}
+        return faceSamples,name_to_id.values(),{v:k for k,v in name_to_id.items()}
 
             
     def build_yml(self):
