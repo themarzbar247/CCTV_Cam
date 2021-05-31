@@ -23,7 +23,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('', include('cctv.urls')),
-    path('cam', include('cctv.urls')),
+    path('cameras', include('cctv.urls')),
     path('alerts', include('cctv.urls')),
     path('recordings', include('cctv.urls')),
     path('', RedirectView.as_view(url='home')),
