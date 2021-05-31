@@ -1,0 +1,7 @@
+[
+    {
+        "streaming_dir": "C:\\Users\\myles\\Documents\\project\\CCTV_Cam\\tmp_stream_output",
+        "camera_name": "camera1",
+        "camra_path_url": "http://192.168.1.100:8080/camera/livestream.m3u8"
+    }
+]
