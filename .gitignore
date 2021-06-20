@@ -17,6 +17,9 @@ media
 *.ts
 *.m3u8
 
+# Training Files #
+trainer.yml
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
@@ -40,3 +43,7 @@ venv.bak/
 !.vscode/launch.json
 !.vscode/extensions.json
 .history
+ml/__pycache__/
+ml/t.txt
+portal/t.txt
+ml/tests/test_

@@ -27,9 +27,9 @@ def index(request):
 # Create your views here.
 def cameras(request):
     context = {
-    'stream_dir' : next(os.walk('cctv\static\cameras'))[1]
+    'stream_dir' : next(os.walk('CCTV_Cam\portal\cctv\static\cameras'))[1]
     }
-    return render(request, "pages/cam.html", context=context)
+    return render(request, "pages/camera.html", context=context)
 
 def alerts(request):
     return render(request, "pages/alerts.html")

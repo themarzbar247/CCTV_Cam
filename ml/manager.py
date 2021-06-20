@@ -5,6 +5,9 @@ from recognizer_training_manager import __file__ as recognizer_training_manager_
 import json
 from commands import Recognise, Decide,Retrain
 import sys
+from recognizer_training_manager import filename_collision_resolve
+from time import time
+from os.path import join
 
 def make_camera(streaming_dir, camera_name, camra_path_url, cascadeClassifierPath):
     return SubprocessWrapper(camera_stream_file).start(streaming_dir, camera_name, camra_path_url,cascadeClassifierPath)
@@ -20,7 +23,7 @@ def main(manager_config_file,camera_config_file):
     
 
 
-def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold, cascadeClassifierPath, camera_config):
+def start_manager(alert_dir, new_find_dir, data_set_dir, unknown_threshold, known_threshold, cascadeClassifierPath, camera_config):
     cameras = []
     for camera in camera_config:
             cameras.append(make_camera(cascadeClassifierPath=cascadeClassifierPath, **camera))
@@ -38,9 +41,12 @@ def start_manager(new_find_dir, data_set_dir, unknown_threshold, known_threshold
         recogniser_command = recogniser.read()
         if isinstance(recogniser_command,Decide):
             if recogniser_command.confidence <= unknown_threshold:
-                pass
+                print("found a face with less than {recogniser_command.confidence} confidence")
+                t = time()
+                cv2.imwrite(filename_collision_resolve(join(alert_dir, f"{t}_frame.jpg")),recogniser_command.frame)
+                cv2.imwrite(filename_collision_resolve(join(alert_dir, f"{t}_face.jpg")),recogniser_command.face)
             elif recogniser_command.confidence >= known_threshold:
-                pass
+                cv2.imwrite(filename_collision_resolve(join(new_find_dir, recogniser_command.name, f"{t}.jpg")),recogniser_command.face)
 
             
 

@@ -16,11 +16,11 @@ import sys
 CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_"
 
 def filename_collision_resolve(img_path):
-    ext = os.path.basename(img_path).split(os.extsep,1)[-1]
+    initial, ext = os.path.basename(img_path).split(os.extsep,1)
     while os.path.exists(img_path):
         fn = os.path.basename(img_path)
         new_name = "".join([random.choice(CHARSET) for _ in range(10)])
-        img_path=img_path.replace(fn, f"{new_name}{os.extsep}{ext}")
+        img_path=img_path.replace(fn, f"{initial}({new_name}){os.extsep}{ext}")
     return img_path
 
 def main(new_find_dir, data_set_dir, rebuild_threshold=10):
@@ -28,13 +28,13 @@ def main(new_find_dir, data_set_dir, rebuild_threshold=10):
     #if we dont want to rebuild we need to tell others about the current file
     if r.should_rebuild():
         s = r.build_yml()
-    send(Retrain(r.trainer_file,True))
+    send(Retrain(r.trainer_file,r.names_file,True))
     from time import sleep
     while True:
         if r.should_rebuild():
             r.copy_dataset_additions()
-            s = r.build_yml()
-            send(Retrain(s))
+            traner_file,name_file = r.build_yml()
+            send(Retrain(traner_file,name_file))
         sleep(30)
 
 
@@ -94,7 +94,7 @@ class RecogniserTrainer:
         recognizer= cv2.face.LBPHFaceRecognizer_create()
         recognizer.train(faceSamples, np.array(ids))
         recognizer.write(self.trainer_file) 
-        return self.trainer_file
+        return self.trainer_file, self.names_file
 
 
 

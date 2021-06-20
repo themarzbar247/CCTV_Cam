@@ -15,11 +15,10 @@
                 <div class="col-md-10">
                 <button onclick="myFunction_{{dir|cut:" "}}()">{{dir}}</button>
                     <div id="{{dir|cut:" "}}">
-                        <div class="video-item">
-                            <div class="video-wrap">
-                                <iframe src="static/{{dir}}/stream.m3u8" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                            </div>
-                        </div>
+                        <video id='hls-example'  class="video-js vjs-default-skin" width="400" height="300" controls>
+                            {% load static %}
+                            <source type="application/x-mpegURL" src="{% static 'cameras/' %}{{dir}}/stream.m3u8">
+                        </video>
                     </div>
                     <!-- JS -->
                     <script>
@@ -37,6 +36,13 @@
                     <!-- End JS -->
                 </div>
                 {% endfor %}
+                <script src="https://vjs.zencdn.net/ie8/ie8-version/videojs-ie8.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.14.1/videojs-contrib-hls.js"></script>
+                <script src="https://vjs.zencdn.net/7.2.3/video.js"></script>
+                <script>
+                    var player = videojs('hls-example');
+                    player.play();
+                </script>
             </div>
             </div>
             <!-- End of Video Grid-->

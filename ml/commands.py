@@ -5,9 +5,10 @@ class Command:
         return f"command - {pformat(self.__dict__)}"
 
 class Retrain(Command):
-    def __init__(self,retrain_yml_path, wait=False):
+    def __init__(self,retrain_yml_path, name_file, wait=False):
         super().__init__()
         self.trainer_path=retrain_yml_path
+        self.name_path = name_file
         self.wait=wait
         
 class Recognise(Command):
@@ -23,11 +24,12 @@ class Quit(Command):
         super().__init__(data)
         
 class Decide(Recognise):
-    def __init__(self, frame, face_rect, camera, face, face_id, confidence):
+    def __init__(self, frame, face_rect, camera, face, face_id, name, confidence):
         super().__init__( frame, face_rect, camera, face)
         self.face_id =face_id
         self.confidence = confidence
+        self.name = name
 
     @classmethod
-    def create_from_get_frame(cls, getframe_command :Recognise, face_id, confidence):
-        return cls(face_id=face_id, confidence=confidence, **getframe_command.__dict__)
+    def create_from_get_frame(cls, getframe_command :Recognise, face_id, name, confidence):
+        return cls(face_id=face_id, confidence=confidence, name=name, **getframe_command.__dict__)
