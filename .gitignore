@@ -44,3 +44,6 @@ venv.bak/
 !.vscode/extensions.json
 .history
 ml/__pycache__/
+ml/t.txt
+portal/t.txt
+ml/tests/test_
