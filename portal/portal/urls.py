@@ -27,4 +27,6 @@ urlpatterns += [
     path('alerts', include('cctv.urls')),
     path('recordings', include('cctv.urls')),
     path('', RedirectView.as_view(url='home')),
+    path('login', include('cctv.urls')),
+    path('register', include('cctv.urls')),
 ]

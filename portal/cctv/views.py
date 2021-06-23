@@ -36,3 +36,11 @@ def alerts(request):
 
 def recordings(request):
     return render(request, "pages/recordings.html")
+
+def loginPage(request):
+    context = {}
+    return render(request, "pages/login.html", context)
+
+def registerPage(request):
+    context = {}
+    return render(request, "pages/register.html", context)
