@@ -6,6 +6,60 @@
   <h2>Dynamic content</h2>
   <p>Some Dynamic content test at somepoint:</p>
   <ul>
-    <li><strong>Temp:</strong></li>
+    <strong>Alerts:</strong>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Notification ID</tr>
+          <th>Alert ID</th>
+          <th>Rule Type</th>
+          <th>Date Fired</th>
+          <th>Date sent</th>
+          <th>Camera Name</th>
+          <th>Camera Location</th>
+          <th>Description</th>
+          <th>Recording Id</th>
+          <th>Recording link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1</td>
+          <td>Recognition</td>
+          <td>08/06/2021 12:30</td>
+          <td>08/06/2021 12:31</td>
+          <td>Office</td>
+          <td>Home Office</td>
+          <td>Person: Myles, Accurracy:45%, Times_Seen:10</td>
+          <td>12</td>
+          <td>127.0.0.1:8000/Recordings/2021/06/08/recoding_12:30:00.mp4</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>1</td>
+          <td>Unknown Person</td>
+          <td>08/06/2021 12:33</td>
+          <td>08/06/2021 12:34</td>
+          <td>Office</td>
+          <td>Home Office</td>
+          <td>Person: Unknown, Accurracy:5%, Times_Seen:N/A</td>
+          <td>15</td>
+          <td>127.0.0.1:8000/Recordings/2021/06/08/recoding_12:33:00.mp4</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>1</td>
+          <td>Recognition</td>
+          <td>08/06/2021 12:35</td>
+          <td>08/06/2021 12:36</td>
+          <td>Office</td>
+          <td>Home Office</td>
+          <td>Person: Myles Accurracy:52% Times_Seen:4</td>
+          <td>17</td>
+          <td>127.0.0.1:8000/Recordings/2021/06/08/recoding_12:35:00.mp4</td>
+        </tr>
+      </tbody>
+    </table>
   </ul>
 {% endblock %}
