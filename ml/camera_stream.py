@@ -8,6 +8,14 @@ import sys
 import numpy as np
 from pprint import pformat
 def main(streaming_dir, camera_name, camra_path_url, cascadeClassifierPath):
+    """The subproccess to wrapper that wraps around the live stream and handels the proccessing of individual frames via CV2 and write out to a livestream file. 
+
+    Args:
+        streaming_dir (String): Path like String for where the camera livestreams are going to be written to.
+        camera_name (String): A human readable name for the camera i.e "Main Door 1"
+        camra_path_url (String): The hosted camera livestream url that needs to be read in
+        cascadeClassifierPath (String): A path like String of the Classifier that is wanted to be used to render the User Livestream
+    """
     faceCascade = cv2.CascadeClassifier(cascadeClassifierPath)
     rand_color = randomcolor.RandomColor()
     next_color = lambda: [int(x) for x in rand_color.generate(luminosity='bright', format_='rgb')[0][4:-1].split(',')] 
