@@ -19,13 +19,21 @@ def send(obj, file=sys.stdout.buffer):
     file.flush()
 
 def recieve(file=sys.stdin.buffer):
-    """Receive a pickled message over the given channel."""
+    """Receive a pickled message over the given channel.
+    
+    Returns:
+        object: A deserialised object from the file buffer.
+    """
     header = read_file(file, HEADER.size)
     payload = read_file(file, *HEADER.unpack(header))
     return pickle.loads(payload)
 
 def read_file(file, size):
-    """Read a fixed size buffer from the file."""
+    """Read a fixed size buffer from the file.
+    
+    Returns:
+        [Byte]: bytes from file buffer.  
+    """
     parts = []
     while size > 0:
         part = file.read(size)
@@ -38,6 +46,11 @@ def read_file(file, size):
 
 
 class SubprocessWrapper:
+    """Encapsulates subproccess to allow for easier communication between parent and child processes. 
+    
+        Args:
+        module_file (String): A path like for a python script to run as a sub proccess.
+    """
     def __init__(self, module_file):
         self.module_file_name = module_file
         self.process = None
@@ -45,6 +58,11 @@ class SubprocessWrapper:
         self.out_q = Queue()
     
     def start(self, *args):
+        """Starts the threads and subproccess
+
+        Returns:
+            SubprocessWrapper: returns self
+        """
         print(f"Starting: {self.module_file_name}{args}")
         self.process = subprocess.Popen([sys.executable, self.module_file_name, *args],
                             stdin=subprocess.PIPE,
@@ -57,9 +75,25 @@ class SubprocessWrapper:
         return self
 
     def send(self,obj):
+        """Sends an object to the child process.
+
+        Args:
+            obj (object): the object to send to the child process
+        """
         self.in_q.put(obj)
     
     def read(self, wait=False):
+        """Reads from the child process
+
+        Args:
+            wait (bool, optional): Should this block the thread. Defaults to False.
+
+        Raises:
+            e: pass through exceptions from child processes.
+
+        Returns:
+            obj (object): the object the child process has sent.
+        """
         try:  obj = self.out_q.get(wait) 
         except Empty:
             return None 
@@ -69,6 +103,8 @@ class SubprocessWrapper:
             return obj
 
     def _enqueue_output(self):
+        """while the child process is running, it will wait for a message and add it to the output enqueue for the main thread to pick up. 
+        """
         try:
             while self.process.poll() is None:
                 self.out_q.put(recieve(self.process.stdout))
@@ -77,6 +113,8 @@ class SubprocessWrapper:
         self.process.stdout.close()
 
     def _enqueue_input(self):
+        """while the child process is running, it will wait for a message in the input enqueue and send it to the child process. 
+        """
         try:
             while self.process.poll() is None:
                 send(self.in_q.get(), self.process.stdin)
